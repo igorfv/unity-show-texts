@@ -9,14 +9,17 @@ public class ChangeTexts : MonoBehaviour {
 	private TextMesh textObject;
 
 	// Show letter by letter
-	private string changingTextTo = "";
 	private int currentTextIndex = -1;
-	private float currentTime = 0;
+
+	private string changingTextTo = "";
+	private int currentLetterIndex = 0;
+	private float previousTime;
 
 	// Use this for initialization
 	void Start () {
 		textObject = GetComponent<TextMesh>();
-
+		previousTime = Time.time;
+		ChangeText ();
 	}
 
 	// Update is called once per frame
@@ -27,7 +30,7 @@ public class ChangeTexts : MonoBehaviour {
 	}
 
 	void Update () {
-//		SlowlyChangeText ();
+		SlowlyChangeText ();
 	}
 
 	string GetNextText () {
@@ -36,13 +39,28 @@ public class ChangeTexts : MonoBehaviour {
 	}
 
 	void ChangeText () {
-		textObject.text = GetNextText ();
+		if (changingTextTo != "")
+			return;
+
+		currentLetterIndex = 0;
+		changingTextTo = GetNextText ();
 	}
-//
-//	void SlowlyChangeText () {
-//		if (changingTextTo == "")
-//			return;
-//
-//
-//	}
+
+	void SlowlyChangeText () {
+		if (changingTextTo == "")
+			return;
+
+		if (Time.time > previousTime + speed) {
+			previousTime = Time.time;
+
+			textObject.text = changingTextTo.Substring (0, currentLetterIndex);
+
+			currentLetterIndex++;
+
+			if (changingTextTo.Length < currentLetterIndex) {
+				currentLetterIndex = 0;
+				changingTextTo = "";
+			}
+		}
+	}
 }
