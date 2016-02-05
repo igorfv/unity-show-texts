@@ -4,12 +4,19 @@ using System.Collections;
 public class ChangeTexts : MonoBehaviour {
 
 	public string[] texts;
+	public float speed;
+
 	private TextMesh textObject;
+
+	// Show letter by letter
+	private string changingTextTo = "";
+	private int currentTextIndex = -1;
+	private float currentTime = 0;
 
 	// Use this for initialization
 	void Start () {
 		textObject = GetComponent<TextMesh>();
-		ChangeText ();
+
 	}
 
 	// Update is called once per frame
@@ -19,12 +26,23 @@ public class ChangeTexts : MonoBehaviour {
 		}
 	}
 
-	string GetARandomText () {
-		int i = Random.Range(0,(texts.Length - 1));
-		return texts[i];
+	void Update () {
+//		SlowlyChangeText ();
+	}
+
+	string GetNextText () {
+		currentTextIndex ++;
+		return texts[currentTextIndex % texts.Length];
 	}
 
 	void ChangeText () {
-		textObject.text = GetARandomText ();
+		textObject.text = GetNextText ();
 	}
+//
+//	void SlowlyChangeText () {
+//		if (changingTextTo == "")
+//			return;
+//
+//
+//	}
 }
